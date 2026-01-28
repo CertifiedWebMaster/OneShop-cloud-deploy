@@ -1,0 +1,38 @@
+---
+import usePageHeader from '@@sf/layouts/use-page-header';
+import useSharedData from '@@sf/composables/use-shared-data';
+import Picture from '@@sf/components/Picture.astro';
+import PitchBar from '~/components/PitchBar.vue';
+import ShopHeader from '~/components/ShopHeader.vue';
+
+const { routeContext } = Astro.locals;
+const { settings, isHomepage } = routeContext;
+const LogoHeading = isHomepage ? 'h1' : 'h2';
+const {
+  pitchBar,
+  shopHeader,
+} = await usePageHeader({ routeContext });
+const { getInlineClientJS } = await useSharedData({ field: 'categories' });
+---
+
+<slot name="pitch-bar">
+  {pitchBar.slides.length > 1 && <PitchBar {...pitchBar} client:idle />}
+  {pitchBar.slides.length === 1 && <PitchBar {...pitchBar} />}
+</slot>
+<script async is:inline set:html={getInlineClientJS()} />
+<ShopHeader {...shopHeader} client:context="data:categories">
+  <Fragment slot="logo">
+    <a href="/">
+      <LogoHeading>
+        <Picture
+          src={settings.logo}
+          alt={settings.name}
+          widths={[300]}
+          fetchpriority="high"
+          loading="eager"
+          class="mx-auto max-w-[150px] hover:drop-shadow-sm"
+        />
+      </LogoHeading>
+    </a>
+  </Fragment>
+</ShopHeader>

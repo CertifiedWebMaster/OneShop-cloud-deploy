@@ -1,0 +1,77 @@
+---
+import api from '@cloudcommerce/api';
+import {
+  type RouteContext,
+  loadRouteContext,
+  getConfig,
+} from '@@sf/ssr-context';
+import BaseHead from '@@sf/layouts/BaseHead.astro';
+import Base from '~/layouts/Base.astro';
+import PageHeader from '~/layouts/PageHeader.astro';
+import PageFooter from '~/layouts/PageFooter.astro';
+import Main from '~/main/Main.astro';
+
+const slug = Astro.params.slug || '';
+if (slug.endsWith('.map')) {
+  return new Response(null, { status: 404 });
+}
+let contentCollection: string | undefined;
+if (slug.startsWith('p/')) {
+  contentCollection = 'extra-pages';
+  Astro.params.slug = slug.replace(/^p\//, '');
+} else if (slug.startsWith('posts/')) {
+  contentCollection = 'blog';
+  Astro.params.slug = slug.replace(/^posts\//, '');
+}
+let routeContext: RouteContext | undefined;
+let loadError: any;
+try {
+  routeContext = await loadRouteContext(Astro, { contentCollection });
+} catch (err: any) {
+  if (err.astroResponse) {
+    return err.astroResponse;
+  }
+  loadError = err;
+}
+
+export async function getStaticPaths() {
+  const paths: Array<{ params: { slug?: string } }> = [{
+    params: { slug: undefined },
+  }];
+  if (!import.meta.env.BUILD_MINIMAL) {
+    const {
+      data: { result: products },
+    } = await api.get('products?fields=slug&sort=-sales&limit=2');
+    products.forEach(({ slug }) => {
+      if (slug) paths.push({ params: { slug } });
+    });
+    const {
+      data: { result: categories },
+    } = await api.get('categories?fields=slug&sort=created_at&limit=1');
+    categories.forEach(({ slug }) => {
+      if (slug) paths.push({ params: { slug } });
+    });
+    const pageSlugs = await getConfig().getContent('extra-pages/');
+    const postSlugs = await getConfig().getContent('blog/');
+    pageSlugs.slice(0, 2).map((slug) => `p/${slug}`)
+      .concat(postSlugs.slice(0, 2).map((slug) => `posts/${slug}`))
+      .forEach((slug) => {
+        paths.push({ params: { slug } });
+      });
+  }
+  return paths;
+}
+---
+
+<!DOCTYPE html>
+<html lang={routeContext?.lang.replace('_', '-')}>
+{routeContext
+  && <Base>
+    <BaseHead slot="base-head" />
+    <PageHeader />
+    <Main />
+    <PageFooter />
+  </Base>
+}
+{loadError && <Fragment set:html={loadError.responseHTML} />}
+</html>

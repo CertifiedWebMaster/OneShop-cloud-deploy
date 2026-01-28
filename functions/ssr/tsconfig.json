@@ -1,0 +1,12 @@
+{
+  "extends": "@cloudcommerce/storefront/tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@@i18n": ["./node_modules/@cloudcommerce/i18n/src/pt_br.ts"],
+      "@@sf/*": ["./node_modules/@cloudcommerce/storefront/src/lib/*"],
+      "~/*": ["./src/*"],
+      "content/*": ["./content/*"],
+    }
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "metatags": {
+    "ogImage": "",
+    "fbAppId": "",
+    "twitterUsername": ""
+  },
+  "customCode": {
+    "css": "",
+    "htmlHead": "",
+    "htmlBody": ""
+  },
+  "header": {
+    "pitchBar": [
+      {
+        "href": "/promotion",
+        "html": "Aproveite nossos descontos de até 50%!"
+      },
+      {
+        "href": "",
+        "html": "<b>Frete grátis</b> <d-md>para todo Brasil</d-md> a partir de {free_shipping_from_value}"
+      }
+    ],
+    "inlineMenuCategories": {
+      "featured": [],
+      "random": 7
+    },
+    "isAlphabeticalSortSubmenu": false
+  },
+  "footer": {
+    "categoriesList": {
+      "isActive": true,
+      "title": "",
+      "categories": []
+    },
+    "pagesList": {
+      "isActive": true,
+      "title": "",
+      "links": []
+    },
+    "stamps": [
+      {
+        "img": "",
+        "alt": "Troca garantida",
+        "icon": "exchange",
+        "href": "/p/trocas"
+      },
+      {
+        "img": "",
+        "alt": "Google Navegação Segura",
+        "icon": "check",
+        "href": "https://transparencyreport.google.com/safe-browsing/search?url={domain}"
+      },
+      {
+        "img": "",
+        "alt": "Conexão SSL",
+        "icon": "lock",
+        "href": ""
+      }
+    ]
+  }
+}

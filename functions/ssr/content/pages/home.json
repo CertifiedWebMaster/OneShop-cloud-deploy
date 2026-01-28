@@ -1,0 +1,63 @@
+{
+  "metaTitle": "",
+  "metaDescription": "",
+  "hero": {
+    "autoplay": 9000,
+    "slides": [
+      {
+        "startsAt": "",
+        "endsAt": "",
+        "img": "/img/uploads/rect89.webp",
+        "alt": "Headset banner",
+        "mobileImg": "/img/uploads/headphone.webp",
+        "href": "/headset",
+        "title": "20% off on first purchase",
+        "subtitle": "At demoStore you can shop the best tech of 2023. Enjoy and get 10% off on your first purchase!",
+        "buttonLink": "/",
+        "buttonText": "See"
+      },
+      {
+        "startsAt": "",
+        "endsAt": "",
+        "img": "/img/uploads/rect859.png",
+        "alt": "",
+        "mobileImg": "",
+        "href": "",
+        "title": "",
+        "subtitle": "",
+        "buttonLink": "",
+        "buttonText": ""
+      }
+    ]
+  },
+  "sections": [
+    {
+      "type": "product-shelf",
+      "collectionIdAndInfo": null,
+      "sort": "-price_discount",
+      "title": "",
+      "isHeadless": false,
+      "isShuffle": false,
+      "limit": 12,
+      "page": 1
+    },
+    {
+      "type": "banners-grid",
+      "banners": [
+        {
+          "img": "/img/uploads/rect8589.png",
+          "href": "/banner-1"
+        },
+        {
+          "img": "/img/uploads/passion.webp",
+          "href": "/banner-2"
+        },
+        {
+          "img": "/img/uploads/rect89.webp",
+          "href": "/banner-3",
+          "mobileImg": "/img/uploads/headphone.webp"
+        }
+      ]
+    }
+  ]
+}
