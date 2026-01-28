@@ -1,0 +1,28 @@
+---
+import type { CmsFields, InferCmsOutput } from '@@sf/content';
+import { bannerListCmsField } from '@@sf/composables/use-banner';
+import BannerPictures from '@@sf/components/BannerPictures.astro';
+import Banner from '~/components/Banner.vue';
+
+export const cmsFields = ({
+  banners: {
+    required: true,
+    ...bannerListCmsField,
+  },
+}) as const satisfies CmsFields;
+
+export type Props = InferCmsOutput<typeof cmsFields>;
+const { banners = [] } = Astro.props;
+---
+
+<section class="ui-section">
+  <ul class="flex flex-wrap gap-4 lg:flex-nowrap">
+    {banners.map((banner) => (
+      <li class="lg:flex-1 [&_img]:w-full [&_img]:object-cover">
+        <Banner {...banner}>
+          <BannerPictures {...banner} slot="picture" />
+        </Banner>
+      </li>
+    ))}
+  </ul>
+</section>

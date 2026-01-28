@@ -1,0 +1,22 @@
+{
+  "name": "with-apps",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "echo '>> Run build from repository root'",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "20"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "@cloudcommerce/events": "^2.57.0",
+    "@cloudcommerce/firebase": "^2.57.0",
+    "@cloudcommerce/modules": "^2.57.0"
+  }
+}

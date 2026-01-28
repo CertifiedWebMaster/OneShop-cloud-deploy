@@ -1,0 +1,15 @@
+{
+  "sections": [
+    {
+      "type": "breadcrumbs"
+    },
+    {
+      "type": "product-details",
+      "hasDescription": true,
+      "hasSpecifications": true
+    },
+    {
+      "type": "related-products"
+    }
+  ]
+}

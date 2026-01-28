@@ -1,0 +1,53 @@
+---
+import {
+  i19home,
+  i19error,
+  i19errorMsg,
+  i19notFound,
+  i19popularProducts,
+} from '@@i18n';
+import ProductShelf from '~/components/ProductShelf.vue';
+
+export interface Props {
+  statusCode?: number;
+}
+const { statusCode } = Astro.props;
+---
+
+<main>
+  <article class="mx-auto mb-16 border-b-2 border-base-100 px-8 pb-12 pt-20 prose">
+    <h1>{i19error} :/</h1>
+    <p
+      id="errorMsg"
+      class={`${(!statusCode || statusCode === 404) ? 'hidden ' : ''}text-xl`}
+    >
+      {i19errorMsg}
+    </p>
+    <p
+      id="404Msg"
+      class={`${statusCode !== 404 ? 'hidden ' : ''}text-xl`}
+    >
+      {i19notFound} (404)
+    </p>
+    {!statusCode && <>
+      <p class="text-xl" id="loadingMsg">
+        ... ... ...
+      </p>
+    </>}
+    <a href="/" class="text-2xl">
+      <i class="mr-1 rotate-180 i-arrow-right"></i>
+      {i19home}
+    </a>
+  </article>
+  {!statusCode && <>
+    <script is:inline>
+      const msgId = window.location.search.includes('status=404')
+        ? '404Msg' : '5xxMsg';
+      document.getElementById(msgId).style.display = 'block';
+      document.getElementById('loadingMsg').style.display = 'none';
+    </script>
+  </>}
+  <article class="mb-9 mt-6 md:mb-12 md:mt-8">
+    <ProductShelf title={i19popularProducts} sort="-views" client:only="vue" />
+  </article>
+</main>

@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /s$
+Disallow: /s?*
+Disallow: /s/$
+Disallow: /s/?*
+Disallow: /app/
+Disallow: /admin/
+Disallow: /_api/
+Disallow: /~*

@@ -1,0 +1,24 @@
+name: Compress images
+
+on:
+  pull_request:
+    paths:
+      - '**.jpg'
+      - '**.jpeg'
+      - '**.png'
+      - '**.webp'
+      - 'package-lock.json'
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  build:
+    # Only run on Pull Requests within the same repository, and not from forks.
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    name: calibreapp/image-actions
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: calibreapp/image-actions@1.4.1

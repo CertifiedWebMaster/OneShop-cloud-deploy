@@ -1,0 +1,34 @@
+{
+  "name": "ssr",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "dev-with-cms": "npx concurrently \"npm:dev\" \"GIT_REPO_DIRECTORY=../.. npx decap-server\"",
+    "build": "node scripts/build.cjs",
+    "build:static": "BUILD_OUTPUT=static astro build",
+    "serve": "firebase emulators:start --only functions:ssr,hosting",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log",
+    "lint:fix": "eslint -c ./.staged.eslintrc.cjs src/**/*.{ts,vue,astro} --fix"
+  },
+  "engines": {
+    "node": "20"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "@cloudcommerce/api": "^2.57.0",
+    "@cloudcommerce/firebase": "^2.57.0",
+    "@cloudcommerce/ssr": "^2.57.0",
+    "@headlessui/vue": "^1.7.23",
+    "micromark": "^4.0.2"
+  },
+  "devDependencies": {
+    "@cloudcommerce/i18n": "^2.57.0",
+    "@cloudcommerce/storefront": "^2.57.0",
+    "@cloudcommerce/types": "^2.57.0",
+    "photoswipe": "^5.4.4"
+  }
+}

@@ -1,0 +1,65 @@
+---
+import { usePageSections } from '@@sf/layouts/use-page-main';
+import Breadcrumbs from '~/components/Breadcrumbs.vue';
+import DocBanners from '~/components/DocBanners.vue';
+import DocDescription from '~/components/DocDescription.vue';
+import BannersGridSection from '~/sections/BannersGridSection.astro';
+import ContentEntrySection from '~/sections/ContentEntrySection.astro';
+import CustomHtmlSection from '~/sections/CustomHtmlSection.astro';
+import PageTitleSection from '~/sections/PageTitleSection.astro';
+import ProductShelfSection from '~/sections/ProductShelfSection.astro';
+import ProductDetailsSection from '~/sections/ProductDetailsSection.astro';
+import SearchShowcaseSection from '~/sections/SearchShowcaseSection.astro';
+
+const { routeContext } = Astro.locals;
+const { sections } = await usePageSections({
+  routeContext,
+  handleCustomSection: async (type, content) => {
+    if (type === 'c:foo') return { props: { ...content, foo: 'bar' } };
+    return { props: content };
+  },
+});
+const { cmsContent } = routeContext;
+/* `apiContext` is surelly set here (from Main.astro)
+cause route resource is required to define sections from content. */
+---
+
+<article class="mb-9 mt-6 md:mb-12 md:mt-8">
+  {sections.map(async ({ type, props }, index) => {
+    if (cmsContent?.$filename) {
+      props.cmsPreview = {
+        contentFilename: cmsContent.$filename,
+        sectionIndex: index,
+      };
+    }
+    switch (type) {
+      case 'breadcrumbs':
+        return <Breadcrumbs />;
+      case 'doc-banners':
+        return <DocBanners />;
+      case 'doc-description':
+        return <DocDescription />;
+      case 'banners-grid':
+        return <BannersGridSection {...props} />;
+      case 'content-entry':
+        return <ContentEntrySection {...props} />;
+      case 'custom-html':
+        return <CustomHtmlSection {...props} />;
+      case 'page-title':
+        return <PageTitleSection {...props} />;
+      case 'product-shelf':
+      case 'related-products':
+        props.isRelatedProducts = type === 'related-products';
+        return <ProductShelfSection {...props} />;
+      case 'search-showcase':
+      case 'context-showcase':
+        return <SearchShowcaseSection {...props} />;
+      case 'product-details':
+        return <ProductDetailsSection {...props} />;
+      case 'c:foo':
+        return <div data-foo={props.foo}></div>;
+      default:
+        return <div data-section={type}></div>;
+    }
+  })}
+</article>

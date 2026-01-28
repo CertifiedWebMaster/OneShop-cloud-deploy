@@ -1,0 +1,102 @@
+name: Build and deploy
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'functions/**'
+      - 'conf/**'
+      - 'package-lock.json'
+      - '.firebaserc'
+      - '.ecomplus/**'
+      - '.github/build-and-deploy'
+      - '.github/workflows/build-and-deploy.yml'
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+    paths:
+      - 'functions/ssr/**'
+      - '.firebaserc'
+      - 'package-lock.json'
+  workflow_dispatch:
+    inputs:
+      deploy-codebase:
+        description: 'Codebase to deploy'
+        type: choice
+        options:
+          - many
+          - with-apps
+          - ssr
+
+permissions:
+  checks: write
+  contents: read
+  pull-requests: write
+  statuses: write
+
+jobs:
+  build-and-deploy:
+    name: Cloud Commerce build and deploy
+    runs-on: ubuntu-22.04
+    if: |
+      github.event.head_commit.message != 'Initial commit'
+      && !contains(github.event.head_commit.message, '[skip ci]')
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
+      - uses: ecomplus/cloud-commerce@main
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-persistent-token: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
+          firebase-service-account: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          ecom-authentication-id: ${{ secrets.ECOM_AUTHENTICATION_ID }}
+          ecom-api-key: ${{ secrets.ECOM_API_KEY }}
+          ecom-store-id: ${{ secrets.ECOM_STORE_ID }}
+          deploy-codebase: ${{ github.event.inputs.deploy-codebase }}
+          bunnynet-api-key: ${{ secrets.BUNNYNET_API_KEY }}
+          mail-sender: ${{ secrets.MAIL_SENDER }}
+          mail-sender-name: ${{ secrets.MAIL_SENDER_NAME }}
+          mail-reply-to: ${{ secrets.MAIL_REPLY_TO }}
+          smtp-host: ${{ secrets.SMTP_HOST }}
+          smtp-port: ${{ secrets.SMTP_PORT }}
+          smtp-user: ${{ secrets.SMTP_USER }}
+          smtp-pass: ${{ secrets.SMTP_PASS }}
+          sendgrid-api-key: ${{ secrets.SENDGRID_API_KEY }}
+          ga-measurement-id: ${{ secrets.GA_MEASUREMENT_ID }}
+          ga-api-secret: ${{ secrets.GA_API_SECRET }}
+          fb-pixel-id: ${{ secrets.FB_PIXEL_ID }}
+          fb-graph-token: ${{ secrets.FB_GRAPH_TOKEN }}
+          tiktok-pixel-id: ${{ secrets.TIKTOK_PIXEL_ID }}
+          tiktok-access-token: ${{ secrets.TIKTOK_ACCESS_TOKEN }}
+          awin-advertiser-id: ${{ secrets.AWIN_ADVERTISER_ID }}
+          awin-api-key: ${{ secrets.AWIN_API_KEY }}
+          tinyerp-token: ${{ secrets.TINYERP_TOKEN }}
+          galaxpay-partner-id: ${{ secrets.GALAXPAY_PARTNER_ID }}
+          galaxpay-partner-hash: ${{ secrets.GALAXPAY_PARTNER_HASH }}
+          datafrete-operator-token: ${{ secrets.DATAFRETE_OPERATOR_TOKEN }}
+          mercadopago-token: ${{ secrets.MERCADOPAGO_TOKEN }}
+          frenet-token: ${{ secrets.FRENET_TOKEN }}
+          galaxpay-id: ${{ secrets.GALAXPAY_ID }}
+          galaxpay-hash: ${{ secrets.GALAXPAY_HASH }}
+          jadlog-contract-token: ${{ secrets.JADLOG_CONTRACT_TOKEN }}
+          pagarme-encrypt-key: ${{ secrets.PAGARME_ENCRYPT_KEY }}
+          pagarme-token: ${{ secrets.PAGARME_TOKEN }}
+          pagarme-partner-id: ${{ secrets.PAGARME_PARTNER_ID }}
+          paghiper-api-key: ${{ secrets.PAGHIPER_API_KEY }}
+          paghiper-token: ${{ secrets.PAGHIPER_TOKEN }}
+          vindi-api-key: ${{ secrets.VINDI_API_KEY }}
+          vindi-public-key: ${{ secrets.VINDI_PUBLIC_KEY }}
+          asaas-api-key: ${{ secrets.ASAAS_API_KEY }}
+          appmax-token: ${{ secrets.APPMAX_TOKEN }}
+          appmax-public-key: ${{ secrets.APPMAX_PUBLIC_KEY }}
+          pix-credentials: ${{ secrets.PIX_CREDENTIALS }}
+          flashcourier-contract: ${{ secrets.FLASHCOURIER_CONTRACT }}
+          webhooks-token: ${{ secrets.WEBHOOKS_TOKEN }}
+          mandae-token: ${{ secrets.MANDAE_TOKEN }}
+          correios-user: ${{ secrets.CORREIOS_USER }}
+          correios-access-code: ${{ secrets.CORREIOS_ACCESS_CODE }}
+          correios-postcard-number: ${{ secrets.CORREIOS_POSTCARD_NUMBER }}
+          pagarmev5-api-token: ${{ secrets.PAGARMEV5_API_TOKEN }}
+          pagarmev5-public-key: ${{ secrets.PAGARMEV5_PUBLIC_KEY }}
+          custom-dotenv: ${{ secrets.CUSTOM_DOTENV }}

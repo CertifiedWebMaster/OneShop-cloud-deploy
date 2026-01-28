@@ -1,0 +1,19 @@
+{
+  "sections": [
+    {
+      "type": "breadcrumbs"
+    },
+    {
+      "type": "page-title"
+    },
+    {
+      "type": "doc-banners"
+    },
+    {
+      "type": "context-showcase"
+    },
+    {
+      "type": "doc-description"
+    }
+  ]
+}

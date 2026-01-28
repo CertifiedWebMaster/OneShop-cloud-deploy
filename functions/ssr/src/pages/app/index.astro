@@ -1,0 +1,44 @@
+---
+import { i19shoppingCart } from '@@i18n';
+import { type RouteContext, loadRouteContext } from '@@sf/ssr-context';
+import Picture from '@@sf/components/Picture.astro';
+import BaseHead from '@@sf/layouts/BaseHead.astro';
+import Base from '~/layouts/Base.astro';
+import CheckoutPage from '~/components/CheckoutPage.vue';
+import CheckoutScripts from '~/scripts/CheckoutScripts.astro';
+import checkoutCustomCss from '~/assets/checkout.css?inline';
+
+let routeContext: RouteContext;
+try {
+  routeContext = await loadRouteContext(Astro);
+} catch (err: any) {
+  return err.astroResponse;
+}
+const { settings, getContent } = routeContext;
+const layoutContent = await getContent('layout');
+const { footer: { stamps } } = layoutContent;
+---
+
+<!DOCTYPE html>
+<html lang={routeContext.lang.replace('_', '-')}>
+  <Base>
+    <Fragment slot="base-head">
+      <BaseHead />
+      <title>{`${i19shoppingCart} | ${settings.name}`}</title>
+      <CheckoutScripts />
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ecomplus/storefront-twbs@7/dist/cdn/storefront-twbs.min.css">
+      <style is:inline set:html={checkoutCustomCss} />
+    </Fragment>
+    <CheckoutPage footerStamps={stamps}>
+      <Picture
+        slot="logo"
+        src={settings.logo}
+        alt={settings.name}
+        widths={[300]}
+        loading="lazy"
+        class="max-w-[150px]"
+      />
+    </CheckoutPage>
+    <script src="@@sf/scripts/vbeta-app"></script>
+  </Base>
+</html>
