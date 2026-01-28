@@ -1,0 +1,36 @@
+---
+import api from '@cloudcommerce/api';
+import loadPageContext, { PageContext } from '@@sf/ssr-context';
+import PagesLayout from '~/layouts/Pages.astro';
+import WildcardMain from '~/main/Wildcard.astro';
+
+if (String(Astro.params.slug).endsWith('.css.map')) {
+  return new Response(null, { status: 404 });
+}
+
+let pageContext: PageContext | undefined;
+let loadError: any;
+try {
+  pageContext = await loadPageContext(Astro);
+} catch (err: any) {
+  if (err.astroResponse) {
+    return err.astroResponse;
+  }
+  loadError = err;
+}
+
+export async function getStaticPaths() {
+  return (await api.get('products?sort=-sales&limit=4&fields=slug'))
+    .data.result.map(({ slug }) => ({ params: { slug } }));
+}
+---
+
+<!DOCTYPE html>
+<html lang={pageContext?.lang.replace('_', '-')}>
+{pageContext &&
+  <PagesLayout pageContext={pageContext}>
+    <WildcardMain pageContext={pageContext} />
+  </PagesLayout>
+}
+{loadError && <Fragment set:html={loadError.responseHTML} />}
+</html>

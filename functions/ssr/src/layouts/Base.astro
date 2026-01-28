@@ -1,0 +1,31 @@
+---
+import type { PageContext } from '@@sf/ssr-context';
+import Base from '@@sf/layouts/Base.astro';
+import InlineScripts from '~/scripts/InlineScripts.astro';
+
+export interface Props {
+  pageContext: PageContext;
+  title?: string;
+}
+
+const { pageContext, title } = Astro.props as Props;
+---
+
+<Base pageContext={pageContext} title={title}>
+  <InlineScripts slot="before-head-end" />
+  <slot />
+</Base>
+
+<style is:global>
+html {
+  scroll-behavior: smooth;
+}
+body {
+  overflow-x: hidden;
+}
+a, button, button > * {
+  transition: background-color var(--transition),
+    color var(--transition), border-color var(--transition),
+    opacity var(--transition), transform var(--transition-fast);
+}
+</style>

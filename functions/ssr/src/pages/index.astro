@@ -1,0 +1,31 @@
+---
+import loadPageContext, { PageContext } from '@@sf/ssr-context';
+import PagesLayout from '~/layouts/Pages.astro';
+import HomeMain from '~/main/Home.astro';
+
+let pageContext: PageContext | undefined;
+let loadError: any;
+try {
+  pageContext = await loadPageContext(Astro);
+  /* Faster SSR without store categories (default) prefetch:
+  pageContext = await loadPageContext(Astro, {
+    apiPrefetchEndpoints: [],
+  });
+  */
+} catch (err: any) {
+  if (err.astroResponse) {
+    return err.astroResponse;
+  }
+  loadError = err;
+}
+---
+
+<!DOCTYPE html>
+<html lang={pageContext?.lang.replace('_', '-')}>
+{pageContext &&
+  <PagesLayout pageContext={pageContext}>
+    <HomeMain pageContext={pageContext} />
+  </PagesLayout>
+}
+{loadError && <Fragment set:html={loadError.responseHTML} />}
+</html>

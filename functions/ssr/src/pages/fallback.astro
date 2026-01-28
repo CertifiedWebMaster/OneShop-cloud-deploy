@@ -1,0 +1,21 @@
+---
+import loadPageContext, { PageContext } from '@@sf/ssr-context';
+import PagesLayout from '~/layouts/Pages.astro';
+import FallbackMain from '~/main/Fallback.astro';
+
+let pageContext: PageContext;
+try {
+  pageContext = await loadPageContext(Astro);
+} catch (err: any) {
+  return err.astroResponse;
+}
+
+// export const prerender = true;
+---
+
+<!DOCTYPE html>
+<html lang={pageContext?.lang.replace('_', '-')}>
+<PagesLayout pageContext={pageContext}>
+  <FallbackMain pageContext={pageContext} />
+</PagesLayout>
+</html>

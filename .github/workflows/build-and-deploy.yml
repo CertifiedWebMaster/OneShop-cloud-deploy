@@ -1,0 +1,36 @@
+name: Build and deploy
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'functions/**'
+      - 'package-lock.json'
+      - '.firebaserc'
+      - '.ecomplus/**'
+      - '.github/build-and-deploy'
+      - '.github/workflows/build-and-deploy.yml'
+  pull_request:
+    paths:
+      - 'functions/ssr/**'
+      - '.firebaserc'
+      - 'package-lock.json'
+
+jobs:
+  build-and-deploy:
+    name: Cloud Commerce build and deploy
+    runs-on: ubuntu-latest
+    if: |
+      !contains(github.event.head_commit.message, '[skip ci]')
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: ecomplus/cloud-commerce@main
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          firebase-service-account: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          ecom-authentication-id: ${{ secrets.ECOM_AUTHENTICATION_ID }}
+          ecom-api-key: ${{ secrets.ECOM_API_KEY }}
+          ecom-store-id: ${{ secrets.ECOM_STORE_ID }}
