@@ -20,8 +20,8 @@
   "main": "index.js",
   "dependencies": {
     "@cloudcommerce/api": "^2.57.0",
-    "@cloudcommerce/firebase": "^2.57.0",
-    "@cloudcommerce/ssr": "^2.57.0",
+    "@cloudcommerce/firebase": "^2.63.2",
+    "@cloudcommerce/ssr": "^2.63.2",
     "@headlessui/vue": "^1.7.23",
     "micromark": "^4.0.2"
   },
